@@ -1,0 +1,103 @@
+﻿@model IEnumerable<de1_part2.ViewModel.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách Product";
+}
+
+<h1>Index</h1>
+
+<form asp-action="Index" method="get">
+    <input type="text" name="searchString" value="@ViewBag.searchString" placeholder="nhập Product cần tìm....." />
+    <button type="submit">Search</button>
+    <a asp-action="Index">Quay lại danh sách</a>
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index"
+                   asp-route-orderBy="ProductId"
+                   asp-route-dsc="@ViewData["ProductId"]"
+                   asp-route-page="@ViewData["Page"]"
+                   asp-route-searchString="@ViewBag.searchString">
+                    @Html.DisplayNameFor(model => model.ProductId)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-orderBy="Name"
+                   asp-route-dsc="@ViewData["Name"]"
+                   asp-route-page="@ViewData["Page"]"
+                   asp-route-searchString="@ViewBag.searchString">
+                    @Html.DisplayNameFor(model => model.Name)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-orderBy="Price"
+                   asp-route-dsc="@ViewData["Price"]"
+                   asp-route-page="@ViewData["Page"]"
+                   asp-route-searchString="@ViewBag.searchString">
+                    @Html.DisplayNameFor(model => model.Price)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ProductId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductId })
+                </td>
+            </tr>
+        }
+
+        <!-- Phần phân trang và form Go to -->
+        <tr>
+            <td colspan="2">
+                @{
+                    int pages = ViewData["Pages"] != null ? (int)ViewData["Pages"] : 1;
+                    int p = ViewData["Page"] != null ? (int)ViewData["Page"] : 1;
+                }
+                <form asp-action="Index" method="get">
+                    <!-- Giữ lại các tham số tìm kiếm và sắp xếp hiện tại khi chuyển trang qua form -->
+                    <input type="hidden" name="searchString" value="@ViewBag.searchString" />
+                    <input type="hidden" name="orderBy" value="@Context.Request.Query["orderBy"]" />
+                    <input type="hidden" name="dsc" value="@Context.Request.Query["dsc"]" />
+
+                    <input type="submit" value="Go to" /> page <input type="number" max="@pages" min="1" name="page" value="@p" style="width: 60px;" /> of @pages
+                </form>
+            </td>
+            <td colspan="4"><strong>Tổng số sản phẩm trang này: @Model.Count()</strong></td>
+        </tr>
+    </tbody>
+</table>

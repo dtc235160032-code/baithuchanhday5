@@ -1,0 +1,59 @@
+﻿@model IEnumerable<de1_part2.Models.Category>
+
+@{
+    ViewData["Title"] = "Danh sách Category";
+}
+
+<h1>Index</h1>
+
+<form asp-action="Index" method="get">
+    <input type="text" name="searchString" value="@ViewBag.searchString" placeholder="nhập Category cần tìm....." />
+    <button type="submit" style="background-color: blue; color:white; border-radius:8px, 15px">Search</button>
+	<a asp-action="Index">Quay lại danh sách</a>
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CategoryId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.CategoryId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CategoryId })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
